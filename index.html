@@ -1,0 +1,144 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container{
+            width:100%;
+        }
+    #navbar{
+        width:100%;
+        background-color: rgb(0, 0, 58);
+        float: right;
+        padding-right: 5%;
+        
+    }
+    #navbar>a{
+        padding:12px;
+        text-align: center;
+        float: right;
+        font-size: 20px;
+        font-weight: 600;
+        margin-right:3px;
+        border: 1px solid rgb(127, 127, 127);
+        text-decoration: none;
+        color: white;
+    }
+
+    #table-container{
+        width: 100%;
+    }
+
+    #table{
+        width:80%;
+        margin:auto;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    
+
+    #table>tr>td,th{
+        border:1px solid black;
+        width:auto;
+        font-size: 18px;
+        text-align: left;
+        padding: px;
+    }
+
+    button{
+        widht:100%;
+    }
+
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="navbar">
+            <a href="index.html">Home</a>
+             <a href="search.html">Search</a>
+         </div>
+    
+         <div id="table-container">
+             <table id="table">
+                 <tr>
+                     <th>Name</th>
+                     <th>Brewery Type</th>
+                     <th>City</th>
+                     <th>State</th>
+                     <th>Country</th>
+                     <th>Link</th>
+                 </tr>
+             </table>
+         </div>
+    </div>
+
+
+    
+</body>
+
+</html>
+<script>
+    fetchData();
+    
+    async function fetchData(){
+        try {
+            let res=await fetch('https://api.openbrewerydb.org/breweries');
+            let data=await res.json();
+            displayData(data);            
+        } catch (error) {
+            console.log('error');
+        }
+        
+        
+    }
+
+    function displayData(data){
+        var table=document.getElementById('table');
+        data.forEach(function(ele){
+         var tr=document.createElement('tr');
+         
+         var name=document.createElement('td');
+         name.innerText=ele.name;
+
+         var breweryType=document.createElement('td');
+         breweryType.innerText=ele.brewery_type;
+
+         var city=document.createElement('td');
+         city.innerText=ele.city;
+
+         var state=document.createElement('td');
+         state.innerText=ele.state;
+
+         var country=document.createElement('td');
+         country.innerText=ele.country;
+
+         var button=document.createElement('td');
+         var moreDetails=document.createElement('button');
+        moreDetails.id='moreDetails';
+        moreDetails.innerText='More Details';
+         
+
+         button.append(moreDetails);
+         var moreDetailsButton=document.getElementById('moreDetails');
+         moreDetails.addEventListener('click',function(){
+                 localStorage.clear();
+                 localStorage.setItem('id',ele.id);
+                 location.href='brewerypage.html'
+         })
+         tr.append(name,breweryType,city,state,country,button);
+         
+
+         table.append(tr);
+        });
+
+        
+
+
+
+    }
+
+
+</script>

@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container{
+            width:100%;
+        }
+    #navbar{
+        width:100%;
+        background-color: rgb(0, 0, 58);
+        float: right;
+        padding-right: 5%;
+        
+    }
+    #navbar>a{
+        padding:12px;
+        text-align: center;
+        float: right;
+        font-size: 20px;
+        font-weight: 600;
+        margin-right:3px;
+        border: 1px solid rgb(127, 127, 127);
+        text-decoration: none;
+        color: white;
+    }
+    #search{
+        width:100%;
+        padding-top: 80px;
+        text-align: center;
+    }
+    #query{
+        padding: 10px 50px;
+        font-size: 20px;
+
+    }
+
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="navbar">
+            <a href="index.html">Home</a>
+             <a href="search.html">Search</a>
+         </div>
+
+         <div id="search">
+             <input type="text" id="query" placeholder="Search" oninput=debounce(main,1000)>
+         </div>
+    </div>
+    
+    
+</body>
+<script>
+    async function main(){
+        try {
+            
+            let query=document.getElementById('query').value;
+            let url="https://api.openbrewerydb.org/breweries?by_name="+query;
+            let data=await fetchData(url);
+            console.log(data);
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function fetchData(url){
+        try {
+            let res=await fetch(url);
+            let data=await res.json();
+            return data;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    let timerId;
+    async function debounce(func,delay){
+    
+    clearTimeout(timerId);
+    timerId=setTimeout(function(){
+        func();
+    },delay)
+    }
+
+
+</script>
+</html>

@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brewery</title>
+    <style>
+        #container{
+            width:100%;
+        }
+    #navbar{
+        width:100%;
+        background-color: rgb(0, 0, 58);
+        float: right;
+        padding-right: 5%;
+        
+    }
+    #navbar>a{
+        padding:12px;
+        text-align: center;
+        float: right;
+        font-size: 20px;
+        font-weight: 600;
+        margin-right:3px;
+        border: 1px solid rgb(127, 127, 127);
+        text-decoration: none;
+        color: white;
+    }
+
+
+        #card{
+            width:40%;
+            padding-top: 50px;
+            margin: auto;
+            border:2px solid black;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="navbar">
+            <a href="index.html">Home</a>
+             <a href="search.html">Search</a>
+         </div>
+        <div id="card"></div>
+
+    </div>
+    
+</body>
+<script>
+    let breweryId=localStorage.getItem('id');
+    let url="https://api.openbrewerydb.org/breweries/"+breweryId;
+    fetchData(url);
+    async function fetchData(url){
+        try {
+            let res=await fetch(url);
+            let data=await res.json();
+            displayData(data);
+        } catch (error) {
+            console.log('error')
+        }
+    }
+    function displayData(data){
+        console.log(data);
+        var card=document.getElementById('card');
+
+        var name=document.createElement('h2');
+        name.innerText=data.name;
+
+        var breweryType=document.createElement('div');
+        breweryType.innerText="Brewery Type: "+data.brewery_type;
+
+         var city=document.createElement('div');
+         city.innerText="City: "+data.city;
+
+         var state=document.createElement('div');
+         state.innerText="State: "+data.state;
+
+         var country=document.createElement('div');
+         country.innerText="Country: "+data.country;
+
+         card.append(name,breweryType,city,state,country);
+    }
+</script>
+</html>
